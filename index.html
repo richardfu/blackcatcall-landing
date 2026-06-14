@@ -813,7 +813,19 @@
     if (!email || !email.includes('@') || !email.includes('.')) {
       emailInput.focus();
       emailInput.style.borderColor = '#f97316';
-      setTimeout(() => { emailInput.style.borderColor = ''; }, 2000);
+      // 顯示提示訊息
+      let errMsg = document.getElementById('email-error');
+      if (!errMsg) {
+        errMsg = document.createElement('p');
+        errMsg.id = 'email-error';
+        errMsg.style.cssText = 'color:#f97316; font-size:12px; margin-top:6px;';
+        emailInput.parentNode.appendChild(errMsg);
+      }
+      errMsg.textContent = '請輸入正確的 Email 格式，例如：name@gmail.com';
+      setTimeout(() => {
+        emailInput.style.borderColor = '';
+        if (errMsg) errMsg.textContent = '';
+      }, 3000);
       return;
     }
 
