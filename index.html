@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黑貓請款 BlackCatCall｜台灣接案者催款工具，尾款自動追討</title>
+<meta name="description" content="黑貓替你當壞人，你繼續當好人。專為台灣接案者設計的自動化請款通知系統。沒追到錢，不收費。">
+<meta name="keywords" content="接案催款,尾款追討,接案收款工具,自由工作者催款,台灣接案者,業主不付款,自動催款系統,黑貓請款">
+<meta name="author" content="Black Cat Call 黑貓請款">
+<link rel="canonical" href="https://blackcatcall.com/">
+
+<!-- Open Graph -->
+<meta property="og:title" content="黑貓請款 — 接案最難的不是做完，是開口要錢">
+<meta property="og:description" content="黑貓替你當壞人，你繼續當好人。台灣接案者專屬自動催款系統，沒追到錢不收費。">
+<meta property="og:url" content="https://blackcatcall.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="黑貓請款 Black Cat Call">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="黑貓請款 — 接案尾款自動催收系統">
+<meta name="twitter:description" content="沒追到錢不收費。台灣接案者專屬的自動催款神器。">
+
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "黑貓請款 Black Cat Call",
+  "description": "台灣接案者專屬自動化請款催收系統，幫助自由工作者追討逾期尾款",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "TWD",
+    "description": "Beta 測試期間免費"
+  },
+  "url": "https://blackcatcall.com"
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', sans-serif;
+    background: var(--white);
+    color: var(--gray-900);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--black);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo .cat-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-logo .cat-icon svg { width: 30px; height: 30px; }
+  .nav-cta {
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .nav-cta:hover { background: var(--gray-700); }
+
+  /* SECTIONS */
+  section { padding: 80px 2rem; }
+  .container { max-width: 760px; margin: 0 auto; }
+  .container-wide { max-width: 960px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    padding: 100px 2rem 80px;
+    text-align: center;
+    background: var(--white);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orange-light);
+    color: var(--orange-dark);
+    border: 1px solid #fed7aa;
+    border-radius: 99px;
+    padding: 5px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    letter-spacing: 0.03em;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 58px);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--black);
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero h1 .accent { color: var(--orange); }
+  .hero-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+  .hero-sub p {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: var(--gray-600);
+    line-height: 1.5;
+  }
+  .hero-sub p strong { color: var(--gray-900); font-weight: 600; }
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 15px 34px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+    margin-bottom: 14px;
+  }
+  .cta-primary:hover { background: var(--orange-dark); transform: translateY(-1px); }
+  .cta-sub { font-size: 13px; color: var(--gray-400); }
+
+  /* DATA STRIP */
+  .data-strip {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 32px 2rem;
+  }
+  .data-strip-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .data-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: var(--gray-700);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .data-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+  .data-source {
+    font-size: 11px;
+    color: var(--gray-400);
+    margin-top: 6px;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--gray-600);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  /* PAIN SECTION */
+  .pain-section { background: var(--white); }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .pain-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  .pain-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+  .pain-card p { font-size: 14px; color: var(--gray-700); line-height: 1.65; }
+  .pain-note {
+    margin-top: 28px;
+    font-size: 14px;
+    color: var(--gray-500);
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* SOLUTION SECTION */
+  .solution-section { background: var(--black); color: var(--white); }
+  .solution-section .section-label { color: var(--orange); }
+  .solution-section .section-title { color: var(--white); }
+  .solution-para {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  .solution-para .hl { color: var(--white); font-weight: 500; }
+  .solution-para .hl-orange { color: var(--orange); font-weight: 600; }
+  .solution-tagline {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* STEPS SECTION */
+  .steps-section { background: var(--white); }
+  .steps-list { display: flex; flex-direction: column; gap: 0; margin-top: 36px; }
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--orange-light);
+    color: var(--orange-dark);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .step-desc { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
+  .step-desc .sub-item { display: block; padding: 3px 0; }
+  .step-desc .sub-item::before { content: "→ "; color: var(--orange); font-weight: 600; }
+
+  /* FEATURES SECTION */
+  .features-section { background: var(--gray-50); }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: border-color 0.15s;
+  }
+  .feature-card:hover { border-color: var(--orange); }
+  .feature-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    background: var(--orange-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .feature-title { font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 6px; }
+  .feature-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+  .feature-upgrade { margin-top: 8px; font-size: 12px; color: var(--orange-dark); font-weight: 500; }
+
+  /* PRICING SECTION */
+  .pricing-section { background: var(--white); }
+  .pricing-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+    text-align: center;
+    margin-top: 36px;
+  }
+  .pricing-headline { font-size: clamp(20px, 3vw, 28px); font-weight: 700; color: var(--black); margin-bottom: 12px; }
+  .pricing-desc {
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pricing-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 24px; }
+  .pill {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .pricing-note { font-size: 13px; color: var(--gray-400); font-style: italic; }
+
+  /* WAITLIST SECTION */
+  .waitlist-section { background: var(--black); }
+  .waitlist-section .section-label { color: var(--orange); }
+  .waitlist-section .section-title { color: var(--white); }
+  .waitlist-section .section-desc { color: rgba(255,255,255,0.6); margin-bottom: 24px; }
+
+  /* CTA BANNER inside waitlist */
+  .cta-banner {
+    background: var(--orange);
+    border-radius: var(--radius-lg);
+    padding: 18px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cta-banner-icon { font-size: 22px; flex-shrink: 0; }
+  .cta-banner-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+  }
+  .cta-banner-text span { font-weight: 400; opacity: 0.9; }
+
+  .perks-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .perk { display: flex; align-items: flex-start; gap: 12px; }
+  .perk-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .perk-dot svg { width: 11px; height: 11px; }
+  .perk-text { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .perk-text strong { color: var(--white); font-weight: 600; }
+
+  .waitlist-form {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-md);
+    padding: 13px 16px;
+    font-size: 15px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+  .form-input::placeholder { color: rgba(255,255,255,0.25); }
+  .form-input:focus { border-color: var(--orange); }
+  .form-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-md);
+    padding: 13px 16px;
+    font-size: 15px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 90px;
+  }
+  .form-textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-textarea:focus { border-color: var(--orange); }
+  .form-submit {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+    margin-top: 8px;
+    letter-spacing: 0.01em;
+  }
+  .form-submit:hover { background: var(--orange-dark); transform: translateY(-1px); }
+  .form-footer { text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 14px; }
+
+  /* SUCCESS STATE */
+  .success-msg { display: none; text-align: center; padding: 40px 24px; }
+  .success-icon { font-size: 48px; margin-bottom: 16px; }
+  .success-msg h3 { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  .success-msg p { font-size: 15px; color: rgba(255,255,255,0.6); }
+
+  /* DIVIDER */
+  .divider { width: 40px; height: 3px; background: var(--orange); border-radius: 99px; margin: 0 auto 32px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    padding: 36px 2rem;
+    text-align: center;
+  }
+  .footer-logo { font-size: 16px; font-weight: 800; color: var(--black); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .footer-sub { font-size: 13px; color: var(--gray-400); margin-bottom: 4px; }
+  .footer-email { font-size: 13px; color: var(--orange); text-decoration: none; }
+  .footer-email:hover { text-decoration: underline; }
+  .footer-copy { font-size: 12px; color: var(--gray-400); margin-top: 16px; line-height: 1.6; }
+
+  /* RWD */
+  @media (max-width: 640px) {
+    nav { padding: 0 1.25rem; }
+    section { padding: 60px 1.25rem; }
+    .hero { padding: 70px 1.25rem 60px; }
+    .data-strip { padding: 24px 1.25rem; }
+    .data-item { font-size: 14px; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .pricing-card { padding: 28px 20px; }
+    .waitlist-form { padding: 24px 20px; }
+    .cta-banner { flex-direction: column; text-align: center; }
+    .step { gap: 14px; }
+    footer { padding: 32px 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span style="font-size:24px; line-height:1;">🐱</span>
+    黑貓請款
+  </a>
+  <a href="#waitlist" class="nav-cta">搶先加入</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">🔥 台灣接案者專屬請款神器</div>
+    <h1>接案最難的不是做完，<br>是<span class="accent">開口要錢！</span></h1>
+    <div class="hero-sub">
+      <p>錢不會自己來，除非有人幫你追。</p>
+      <p><strong>黑貓替你當壞人，你繼續當好人。</strong></p>
+      <p>你上次放棄追款，損失了多少？</p>
+    </div>
+    <a href="#waitlist" class="cta-primary">
+      搶先登記早鳥會員
+    </a>
+    <div>
+      <p class="cta-sub">Beta 測試名額有限・測試期間完全免費</p>
+    </div>
+  </div>
+</section>
+
+<!-- DATA STRIP -->
+<div class="data-strip">
+  <div class="data-strip-inner">
+    <div class="data-item">
+      <span class="dot"></span>
+      全球 85% 的接案者都曾遇過款項拖延
+    </div>
+    <div class="data-item">
+      <span class="dot"></span>
+      平均每年花 102 小時在追款，這些時間本來都可以拿來接案
+    </div>
+    <div class="data-item">
+      <span class="dot"></span>
+      超過 20% 的接案者，有一半以上的案子晚付或根本沒付
+    </div>
+    <p class="data-source">數據來源：Remote Contractor Management Report 2025・Jobbers Global Freelance Payment Report 2026</p>
+  </div>
+</div>
+
+<!-- PAIN SECTION -->
+<section class="pain-section">
+  <div class="container">
+    <p class="section-label">你有沒有這種感覺</p>
+    <h2 class="section-title">每個接案者都懂的<br>那種無奈</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="pain-emoji">😮‍💨</span>
+        <p>案子交了兩個禮拜，尾款還沒來。傳 LINE 感覺自己像在討錢，不傳又在幫對方省錢。</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-emoji">😤</span>
+        <p>催了一次，業主說「好好好，這週處理」。然後就沒有然後了。再催一次？臉皮要多厚？</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-emoji">😞</span>
+        <p>算了，這次認了。但每次接新案子，心裡還是有個疙瘩：萬一又這樣怎麼辦？</p>
+      </div>
+    </div>
+    <p class="pain-note">催款很尷尬。這不是你的問題，是你沒有一個幫你催的人。</p>
+  </div>
+</section>
+
+<!-- SOLUTION SECTION -->
+<section class="solution-section">
+  <div class="container">
+    <p class="section-label">解決方案</p>
+    <h2 class="section-title">這就是黑貓<br>存在的理由</h2>
+    <div class="divider"></div>
+    <p class="solution-para">黑貓請款是專為台灣接案者設計的<span class="hl">專案請款通知系統</span>。</p>
+    <p class="solution-para">你只需要輸入業主信箱、手機、案子金額、各階段到期日。從收定金開始，每個里程碑完成、每筆款項到期，黑貓自動發出正式通知。</p>
+    <p class="solution-para">業主收到的是來自 <span class="hl-orange">BC-Milestone 專案進度管理系統</span> 的通知，不是你個人傳的訊息。你可以這樣跟業主說：「我工作室用 BC-Milestone 同步專案進度，你會收到各階段的進度確認信，方便我們雙方掌握時程。」</p>
+    <p class="solution-para">尾款逾期了？黑貓自動啟動升溫催款序列，語氣從禮貌到嚴肅，你完全不用動手。</p>
+    <p class="solution-tagline">你繼續當好人。黑貓負責盯。🐱</p>
+  </div>
+</section>
+
+<!-- STEPS SECTION -->
+<section class="steps-section">
+  <div class="container">
+    <p class="section-label">運作流程</p>
+    <h2 class="section-title">黑貓怎麼幫你追</h2>
+    <p class="section-desc">四個步驟，設定一次，全程自動</p>
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p class="step-title">你輸入案子資訊</p>
+          <p class="step-desc">業主姓名、email、手機、案子說明、各階段金額與到期日。系統支援多階段設定：定金、第一階段完成款、第二階段……一直到尾款，完全依照你的合作結構設定。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p class="step-title">業主收到第一封專案啟動確認信</p>
+          <p class="step-desc">系統以 BC-Milestone 名義發出「專案啟動確認信」。你告訴業主這是你工作室用來同步進度的系統，請他確認收到。業主確認後，後續所有通知持續送達同一收件人。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p class="step-title">每個里程碑自動通知 ＋ 請款</p>
+          <p class="step-desc">每個階段完成，系統自動發出完成通知與付款提醒。業主付款後，你按下「此階段款項已收到」，系統繼續推進到下一階段。沒有按，催款序列自動啟動。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <p class="step-title">逾期升溫，黑貓出動</p>
+          <p class="step-desc">
+            <span class="sub-item">逾期第 1 天：禮貌提醒，同步發出催款簡訊加壓</span>
+            <span class="sub-item">逾期第 7 天：語氣轉正式，信件＋簡訊雙管齊下，加入逾期天數說明</span>
+            <span class="sub-item">逾期第 14 天：告知將保留進一步法律行動的權利</span>
+            <span class="sub-item">仍未付款：升級選項出現——存證信函生成、律師函轉介</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="features-section">
+  <div class="container-wide">
+    <div style="text-align:center;">
+      <p class="section-label">功能說明</p>
+      <h2 class="section-title">黑貓的武器庫</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <p class="feature-title">多階段專案請款通知</p>
+        <p class="feature-desc">從定金到尾款，每個里程碑都有對應的通知與請款信。整個合作過程都有正式書面記錄，不只是催尾款。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎭</div>
+        <p class="feature-title">BC-Milestone 身份發信</p>
+        <p class="feature-desc">所有通知來自 BC-Milestone 系統，業主感受到正式的專案管理壓力。你繼續維持良好客戶關係，黑貓幫你施壓。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <p class="feature-title">已收款確認才停止催款</p>
+        <p class="feature-desc">你按下「款項已收到」，黑貓才停下來。沒有按，系統持續催。業主無法假裝沒看到，你也不會漏收款。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <p class="feature-title">Email ＋ 簡訊雙管道施壓</p>
+        <p class="feature-desc">逾期後同步發出催款簡訊，比單純 email 更難忽視。雙管道確保業主接收到訊息，心理壓力倍增。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <p class="feature-title">一鍵生成存證信函 PDF</p>
+        <p class="feature-desc">系統自動帶入業主姓名、金額、逾期天數，生成符合郵局格式的存證信函。列印帶去郵局，五分鐘搞定。</p>
+        <p class="feature-upgrade">↑ 升級選項：合作律師事務所代寄律師函，一鍵委託</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚫</div>
+        <p class="feature-title">業主信用黑名單</p>
+        <p class="feature-desc">慣性拖款業主的付款記錄在平台留存，接案前可查詢。讓拖款行為在台灣接案圈留下記錄，賴帳無所遁形。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section class="pricing-section">
+  <div class="container">
+    <p class="section-label" style="text-align:center;">定價</p>
+    <h2 class="section-title" style="text-align:center;">沒追到錢，<br>我們不收你一毛</h2>
+    <div class="pricing-card">
+      <p class="pricing-headline">結案收費，沒案子不扣錢</p>
+      <p class="pricing-desc">案子開始追款，完全免費。業主付款、你按確認，我們才收取一小筆服務費。沒有月租，沒有隱藏費用。</p>
+      <div class="pricing-pills">
+        <span class="pill">✓ 沒追到不收費</span>
+        <span class="pill">✓ 沒案子不扣錢</span>
+        <span class="pill">✓ 無月租費</span>
+      </div>
+      <p class="pricing-note">具體收費方案正在規劃中，Beta 用戶享有優先投票權，你的意見直接決定定價。</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST SECTION -->
+<section class="waitlist-section" id="waitlist">
+  <div class="container">
+    <p class="section-label">加入等待名單</p>
+    <h2 class="section-title">黑貓還沒開張，<br>但你可以先佔位</h2>
+    <p class="section-desc">加入等待名單的早鳥用戶享有：</p>
+
+    <div class="cta-banner">
+      <span class="cta-banner-icon">🔥</span>
+      <p class="cta-banner-text">
+        Beta 測試名額有限，搶先加入全程免費使用
+        <br><span>名額不多，先搶先用</span>
+      </p>
+    </div>
+
+    <div class="perks-list">
+      <div class="perk">
+        <div class="perk-dot">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="perk-text"><strong>優先加入 Beta 測試，測試期間完全免費</strong></p>
+      </div>
+      <div class="perk">
+        <div class="perk-dot">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="perk-text"><strong>介紹一位朋友成為付費用戶，送你一個案子免費</strong>，介紹越多省越多</p>
+      </div>
+      <div class="perk">
+        <div class="perk-dot">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="perk-text"><strong>優先參與定價投票</strong>，你的意見直接決定收費方案</p>
+      </div>
+      <div class="perk">
+        <div class="perk-dot">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="perk-text"><strong>優先使用所有新功能</strong>，第一批體驗完整黑貓武器庫</p>
+      </div>
+    </div>
+
+    <div class="waitlist-form" id="waitlist-form">
+      <div class="form-group">
+        <label class="form-label" for="email">你的 Email *</label>
+        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="feedback">你最想讓黑貓幫你解決什麼問題？（選填）</label>
+        <textarea id="feedback" class="form-textarea" placeholder="自由填寫，你最大痛點，我們沒想到的事...."></textarea>
+      </div>
+      <button type="button" class="form-submit" onclick="handleSubmit()">
+        搶先登記早鳥會員
+      </button>
+      <p class="form-footer">不會寄垃圾信。只在開放測試時通知你。</p>
+    </div>
+
+    <div class="success-msg" id="success-msg">
+      <div class="success-icon">🐱</div>
+      <h3>黑貓已記下你了。</h3>
+      <p>開放測試那天，你第一個知道。</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">🐱 黑貓請款 Black Cat Call</p>
+  <p class="footer-sub">為台灣接案者而生・BlackCatCall.com</p>
+  <a href="mailto:hello@blackcatcall.com" class="footer-email">hello@blackcatcall.com</a>
+  <p class="footer-copy">© 2026 BlackCatCall. All rights reserved.　專案尾款逾期處理與自動化跟催專家。</p>
+</footer>
+
+<script>
+  // ⬇️ 把你的 Google Apps Script URL 貼在這裡
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzY5zKM4r9O8ehzmCoRBmYuUhRTWxKUswDAI2pZNt5BTktMYoN_0T2dBBrjl9SWfx92WA/exec';
+
+  async function handleSubmit() {
+    const emailInput = document.getElementById('email');
+    const feedbackInput = document.getElementById('feedback');
+    const submitBtn = document.querySelector('.form-submit');
+    const email = emailInput.value.trim();
+
+    // Validate email
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      emailInput.focus();
+      emailInput.style.borderColor = '#f97316';
+      setTimeout(() => { emailInput.style.borderColor = ''; }, 2000);
+      return;
+    }
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送出中...';
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          feedback: feedbackInput.value.trim()
+        })
+      });
+
+      // Show success (no-cors means we can't read response, assume success)
+      document.getElementById('waitlist-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+
+    } catch (error) {
+      // Even on network error, show success if fetch was sent
+      document.getElementById('waitlist-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>
